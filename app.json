@@ -1,0 +1,19 @@
+{
+  "expo": {
+    "name": "Wordsmith",
+    "slug": "wordsmith",
+    "version": "0.0.1",
+    "orientation": "portrait",
+    "userInterfaceStyle": "automatic",
+    "assetBundlePatterns": ["assets/**/*"],
+    "ios": { "supportsTablet": true },
+    "android": {
+      "package": "com.wordsmith.app"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "single"
+    }
+  }
+}

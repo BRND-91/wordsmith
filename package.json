@@ -1,0 +1,31 @@
+{
+  "name": "wordsmith",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/scoring.test.js && node test/dictionary.test.js && node test/run.test.js && node test/meta.test.js && node test/presenter.test.js && node test/persistence.test.js && node test/economy.test.js && node test/relics.test.js",
+    "build:dict": "node tools/build-dictionary.mjs",
+    "smoke": "node tools/balance-smoke.mjs",
+    "navmap": "node tools/gen-nav-map.mjs",
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios"
+  },
+  "dependencies": {
+    "@expo/metro-runtime": "~3.2.3",
+    "expo": "~51.0.28",
+    "expo-asset": "~10.0.10",
+    "expo-file-system": "~17.0.1",
+    "expo-sqlite": "~14.0.6",
+    "expo-status-bar": "~1.12.1",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-web": "~0.19.10"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.0"
+  }
+}
