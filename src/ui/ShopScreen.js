@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, Pressable, ScrollView, StyleSheet } from 'react-native';
-import RelicIcon, { RelicCaption } from './RelicIcon.js';
+import RelicIcon from './RelicIcon.js';
 import { countTiles } from '../bag.js';
 import { relicList, econRelics } from '../inventory.js';
 import {
@@ -34,17 +34,6 @@ export default function ShopScreen({ theme, run, onLeave }) {
   const [, force] = useState(0);
   const [service, setService] = useState(null);
   const [notice, setNotice] = useState(null);
-  // One focus shared by the shelf and the owned row; a relic id is unique across
-  // both, and the caption under the owned row doubles as the sell control.
-  const [hover, setHover] = useState(null);
-  const [pinned, setPinned] = useState(null);
-  const focus = hover ?? pinned;
-  const iconProps = {
-    theme,
-    onFocus: setHover,
-    onBlur: () => setHover(null),
-    onPress: (id) => setPinned((p) => (p === id ? null : id)),
-  };
   const apply = (fn) => {
     const r = fn();
     // The cheap-relic tax is the one purchase that lands a downside, so it is
@@ -59,7 +48,6 @@ export default function ShopScreen({ theme, run, onLeave }) {
   const reroll = rerollCost(shop.rerolls, econ);
   const tiles = countTiles(run.bag);
   const owned = relicList(run.inventory);
-  const ownedFocus = focus ? owned.find((r) => r.id === focus) : null;
   const btn = (enabled) => [BUTTON, styles.btn, { backgroundColor: enabled ? theme.accent : theme.surface, borderColor: enabled ? theme.gold : theme.border, opacity: enabled ? 1 : 0.5 }];
   const btnText = (enabled) => [BUTTON_TEXT, styles.btnText, { color: enabled ? theme.accentInk : theme.subtle }];
 
@@ -82,11 +70,9 @@ export default function ShopScreen({ theme, run, onLeave }) {
           const can = run.gold >= relicPrice(r, econ);
           return (
             <View key={r.id} style={[styles.card, PANEL, { backgroundColor: theme.surface, borderColor: theme.border }]}>
-              <RelicIcon {...iconProps} relic={r} size={40} active={focus === r.id} />
+              <RelicIcon theme={theme} relic={r} size={40} />
               <View style={styles.cardText}>
-                <Text style={[styles.cardLabel, { color: focus === r.id ? theme.ink : theme.subtle, fontStyle: focus === r.id ? 'normal' : 'italic' }]}>
-                  {focus === r.id ? r.label : 'hover or tap to read'}
-                </Text>
+                <Text style={[styles.cardLabel, { color: theme.ink }]}>{r.label}</Text>
                 <Text style={[styles.cardTag, { color: theme.subtle }]}>{r.rarity} · {r.tag}</Text>
               </View>
               <Pressable onPress={() => apply(() => buyRelic(run, r.id))} style={btn(can)}>
@@ -150,21 +136,19 @@ export default function ShopScreen({ theme, run, onLeave }) {
         )}
 
         <Text style={[styles.section, { color: theme.subtle }]}>OWNED</Text>
-        <View style={styles.ownedRow}>
-          {owned.map((r) => (
-            <RelicIcon key={r.id} {...iconProps} relic={r} size={24} active={focus === r.id} />
-          ))}
-        </View>
-        <RelicCaption theme={theme} relic={ownedFocus} prompt={owned.length ? 'hover or tap a relic to read it, then sell' : 'none owned'}>
-          {ownedFocus && (
-            <Pressable
-              onPress={() => { setPinned(null); apply(() => sellRelic(run, ownedFocus.id)); }}
-              style={btn(true)}
-            >
-              <Text style={btnText(true)}>SELL {sellPrice(ownedFocus)}g</Text>
+        {owned.map((r) => (
+          <View key={r.id} style={[styles.card, PANEL, { backgroundColor: theme.surface, borderColor: theme.border }]}>
+            <RelicIcon theme={theme} relic={r} size={24} />
+            <View style={styles.cardText}>
+              <Text style={[styles.cardLabel, { color: theme.ink }]}>{r.label}</Text>
+              <Text style={[styles.cardTag, { color: theme.subtle }]}>{r.rarity} · {r.tag}</Text>
+            </View>
+            <Pressable onPress={() => apply(() => sellRelic(run, r.id))} style={btn(true)}>
+              <Text style={btnText(true)}>SELL {sellPrice(r)}g</Text>
             </Pressable>
-          )}
-        </RelicCaption>
+          </View>
+        ))}
+        {owned.length === 0 && <Text style={[styles.empty, { color: theme.subtle }]}>none owned</Text>}
       </ScrollView>
       <Pressable
         onPress={() => { leaveShop(run); onLeave(); }}
@@ -179,7 +163,7 @@ export default function ShopScreen({ theme, run, onLeave }) {
 const styles = StyleSheet.create({
   screen: { flex: 1 },
   head: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, paddingHorizontal: 16, borderBottomWidth: 3 },
-  title: { ...HEADING, fontSize: 20, letterSpacing: 4 },
+  title: { ...HEADING, fontSize: 20, letterSpacing: 2 },
   gold: { fontFamily: FONT.display, fontSize: 18, fontWeight: '700' },
   body: { padding: 16, gap: 10 },
   notice: { ...BODY, fontSize: 14, textAlign: 'center' },
@@ -200,6 +184,5 @@ const styles = StyleSheet.create({
   pill: { width: 44, borderWidth: 2, borderRadius: 3, alignItems: 'center', paddingVertical: 4 },
   chipLetter: { fontFamily: FONT.display, fontSize: 16, fontWeight: '700' },
   chipCount: { fontFamily: FONT.display, fontSize: 10, fontWeight: '700' },
-  ownedRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 6 },
   leave: { margin: 16, paddingVertical: 14 },
 });

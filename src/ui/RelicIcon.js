@@ -3,15 +3,17 @@ import { View, Text, Image, Pressable, StyleSheet } from 'react-native';
 import { RELIC_SPRITES } from './sprites.js';
 import { BODY } from './theme.js';
 
-// Icon-only relic badge. Hover (web) and press (touch) both report the relic to
-// the parent, which owns the single caption line under the row; a per-badge
-// bubble would clip on a phone where the last badge in a row sits at the edge.
+// Icon-only relic badge. In the round tray, hover (web) and press (touch) both
+// report the relic to the parent, which owns the single caption line under the
+// row; a per-badge bubble would clip on a phone where the last badge in a row
+// sits at the edge. The market passes no handlers: it prints each description
+// beside its badge, so the badge is static there.
 export default function RelicIcon({ theme, relic, size, active, onFocus, onBlur, onPress }) {
   return (
     <Pressable
-      onHoverIn={() => onFocus(relic.id)}
+      onHoverIn={onFocus && (() => onFocus(relic.id))}
       onHoverOut={onBlur}
-      onPress={() => onPress(relic.id)}
+      onPress={onPress && (() => onPress(relic.id))}
       style={[
         styles.badge,
         { width: size + 10, height: size + 10, backgroundColor: theme.surface, borderColor: active ? theme.gold : theme.border },

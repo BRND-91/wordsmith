@@ -11,14 +11,13 @@ export const SHAPES = {
 
 export const MULT_GLYPH = '×'; // × prefixes every mult value
 
-// Two OFL faces, served from public/fonts and registered by the @font-face
-// block App.js injects on web. Cinzel (Roman inscription capitals) carries
-// every title, button, and number; IM Fell English (17th-century book type)
-// carries every sentence. Native has no loader wired, so it falls to the
-// platform serif.
+// Two OFL variable faces, served from public/fonts and registered by the
+// @font-face block App.js injects on web. Fraunces (a wonky old-style display
+// serif) carries every title, button, and number; Instrument Sans carries every
+// sentence. Native has no loader wired, so it falls to the platform faces.
 export const FONT = {
-  display: Platform.OS === 'web' ? 'Cinzel, serif' : 'serif',
-  body: Platform.OS === 'web' ? '"IM Fell English", serif' : 'serif',
+  display: Platform.OS === 'web' ? 'Fraunces, serif' : 'serif',
+  body: Platform.OS === 'web' ? '"Instrument Sans", sans-serif' : 'sans-serif',
 };
 
 // Chrome is square-cornered and double-ruled: a panel reads as a plank or a
@@ -26,8 +25,8 @@ export const FONT = {
 // screens share a silhouette.
 export const PANEL = { borderWidth: 2, borderRadius: 4 };
 export const BUTTON = { borderWidth: 2, borderRadius: 3, paddingVertical: 10, paddingHorizontal: 18, alignItems: 'center', justifyContent: 'center' };
-export const BUTTON_TEXT = { fontFamily: FONT.display, fontSize: 14, fontWeight: '700', letterSpacing: 2 };
-export const HEADING = { fontFamily: FONT.display, fontWeight: '700', letterSpacing: 2 };
+export const BUTTON_TEXT = { fontFamily: FONT.display, fontSize: 14, fontWeight: '700', letterSpacing: 1 };
+export const HEADING = { fontFamily: FONT.display, fontWeight: '700', letterSpacing: 1 };
 export const BODY = { fontFamily: FONT.body };
 
 // Heraldic palette: parchment and oak by day, torchlit stone by night. accent is

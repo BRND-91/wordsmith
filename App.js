@@ -14,9 +14,10 @@ import GameScreen from './src/ui/GameScreen.js';
 if (Platform.OS === 'web') {
   const style = document.createElement('style');
   style.textContent = [
-    "@font-face{font-family:'Cinzel';src:url('/fonts/Cinzel.ttf') format('truetype');font-weight:400 900;font-display:swap}",
-    "@font-face{font-family:'IM Fell English';src:url('/fonts/IMFellEnglish-Regular.ttf') format('truetype');font-style:normal;font-display:swap}",
-    "@font-face{font-family:'IM Fell English';src:url('/fonts/IMFellEnglish-Italic.ttf') format('truetype');font-style:italic;font-display:swap}",
+    "@font-face{font-family:'Fraunces';src:url('/fonts/Fraunces.ttf') format('truetype');font-weight:100 900;font-style:normal;font-display:swap}",
+    "@font-face{font-family:'Fraunces';src:url('/fonts/Fraunces-Italic.ttf') format('truetype');font-weight:100 900;font-style:italic;font-display:swap}",
+    "@font-face{font-family:'Instrument Sans';src:url('/fonts/InstrumentSans.ttf') format('truetype');font-weight:400 700;font-style:normal;font-display:swap}",
+    "@font-face{font-family:'Instrument Sans';src:url('/fonts/InstrumentSans-Italic.ttf') format('truetype');font-weight:400 700;font-style:italic;font-display:swap}",
   ].join('');
   document.head.appendChild(style);
 }
