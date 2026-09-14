@@ -170,7 +170,7 @@ export function createRun(seed, { relics = [] } = {}) {
   return {
     seed, rng, bag, rack,
     act: 1, round: 1, plays: PLAYS_PER_ROUND,
-    score: 0, played: [], inventory: createInventory(relics),
+    score: 0, total: 0, played: [], inventory: createInventory(relics),
     gold: 0, tileBonus: {}, shop: null,
     boss: drawBoss(rng, 1), lost: null,
     modifiers: [], draft: null, consumables: [], armed: null,
@@ -284,6 +284,9 @@ function commitPlay(state, word, remaining, total) {
   if (state.armed === 'freeplay') state.armed = null;
   else state.plays -= 1;
   state.score += total;
+  // score is the round's running figure and resets on a clear; total is the
+  // whole run's, what the share payload and the high-score table carry.
+  state.total += total;
 }
 
 // Draw-and-spent: the chosen rack indices leave for the price of one play and

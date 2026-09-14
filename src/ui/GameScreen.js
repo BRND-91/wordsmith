@@ -60,7 +60,7 @@ export default function GameScreen({ theme, dict, db, saved }) {
       return;
     }
     clearRun(db)
-      .then(() => recordHighScore(db, run.seed, run.score))
+      .then(() => recordHighScore(db, run.seed, run.total))
       .then(() => loadScoreboard(db))
       .then((board) => setEndStats({ best: best(board, run.seed), share: encodeShare(buildSharePayload(run)) }));
   }, [tick, seed, run, db]);

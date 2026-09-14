@@ -32,7 +32,7 @@ export function buildSharePayload(run) {
     tileBonus: run.tileBonus,
     route: run.route,
     words: run.played,
-    total: run.score,
+    total: run.total,
   };
 }
 

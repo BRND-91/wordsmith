@@ -15,7 +15,7 @@ import { createInventory, relicList } from './inventory.js';
 // inside bag and rack as ordinary entries; the drafted modifiers, a pending
 // draft, held consumables, and an armed one are their own fields, as are the
 // act's lane, a pending lane choice, and the route of lane picks so far.
-export const SCHEMA_VERSION = 6;
+export const SCHEMA_VERSION = 7;
 export const KEYS = { main: 'run', tmp: 'run.tmp' };
 
 function bodyOf(run) {
@@ -30,6 +30,7 @@ function bodyOf(run) {
       round: run.round,
       plays: run.plays,
       score: run.score,
+      total: run.total,
       played: run.played,
       boss: run.boss,
       gold: run.gold,
@@ -80,6 +81,7 @@ export function decodeSave(str, pool = POOL) {
     round: d.round,
     plays: d.plays,
     score: d.score,
+    total: d.total,
     played: d.played,
     boss: d.boss,
     gold: d.gold,

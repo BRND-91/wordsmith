@@ -47,6 +47,7 @@ check('save round-trips run state and rehydrates relics from the pool', () => {
   assert.deepEqual(r.bag, run.bag);
   assert.deepEqual(r.rack, run.rack);
   assert.equal(r.score, run.score);
+  assert.equal(r.total, run.total);
   assert.deepEqual(r.played, run.played);
   assert.deepEqual(relicList(r.inventory).map((x) => x.id), RELIC_IDS);
   assert.equal(r.boss, run.boss);
@@ -88,6 +89,20 @@ function clearRound(run) {
   run.score = roundTarget(run);
   return endRound(run);
 }
+
+check('a share after a round clear claims the whole run, not the reset round score', () => {
+  const run = freshRun();
+  const first = run.total;
+  clearRound(run);
+  pickLane(run, 'safe');
+  assert.equal(run.score, 0);
+  run.rack = ['q', 'u', 'a', 'r', 't', 'z', 'x', 'y', 'w'];
+  assert.equal(playWord(run, 'quartz', dict).ok, true);
+  assert.ok(run.total > first);
+  const v = verifyShare(encodeShare(buildSharePayload(run)), dict);
+  assert.equal(v.claimedTotal, run.total);
+  assert.equal(v.matches, true);
+});
 
 check('a share carries the route and a receiver walking the seed down it banks the same elite relic', () => {
   const run = freshRun();
